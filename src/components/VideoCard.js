@@ -8,7 +8,7 @@ const VideoCard = (info) => {
   return (
     <div>
         <h1>{info?.snippet?.channelTitle}naam</h1>
-      {/* <img src={thumbnails?.high?.url} alt='thumbnail' /> */}
+      {/* <img src={thumbnails?.medium?.url} alt='thumbnail' /> */}
       {/* <ul>
         <li>{snippet.title}</li>
         <li>{snippet.channelTitle}</li>
