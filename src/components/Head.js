@@ -1,19 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { toggleMenu } from "../utils/appSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { YOUTUBE_SEARCH_API } from "../utils/constants";
+import { cacheResults } from "../utils/searchSlice";
 
 const Head = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+
+  // to use the cache we have to dispatch a action from reduxstore to appsite via useSelector
+  const searchCache = useSelector((store) => store.search);
+
+  /*  searchcache
+  * {
+      "iphone" : ["iphone 11", "iphone 14"]
+  }
+  * searchQuery = iphone
+  */
  
   useEffect(() =>{
     // api call
 
     //make an api call after every key press
     //but if the diff. b/w two press/2 api call is <200ms decline api call
-    const timer = setTimeout(() => getSearchSuggestion(), 200);
+    const timer = setTimeout(() => {
+      if (searchCache[searchQuery]) {                     // cache is stored in redux store
+        setSuggestions(searchCache[searchQuery]);
+      } else {
+      getSearchSuggestion()
+      } 
+    }, 200);
 
     return() => {
       clearTimeout(timer);
@@ -41,7 +58,12 @@ const getSearchSuggestion = async () => {
   const json = await data.json();
   // console.log(json)
   setSuggestions(json[1]);
-}
+
+  //update cache
+  dispatch(cacheResults({
+    [searchQuery]: json[1],
+  }));
+};
 
   const dispatch = useDispatch();
   const toggleMenuHandler = () => {
