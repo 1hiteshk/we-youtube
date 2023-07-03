@@ -68,3 +68,8 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+* collapsible sidebar made with redux store to manage state
+* Debouncing :
+   doing eveents fast like 200ms to skip some events or calls  to increase performance,
+   for e.g. in flipkart if key strokes is less than 200ms then dont make an suggestion api call

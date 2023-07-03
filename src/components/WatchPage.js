@@ -7,6 +7,7 @@ const WatchPage = () => {
   const [searchParams] = useSearchParams();
   console.log(searchParams.get("v")); // watch?v= to get id of video clicked
   const dispatch = useDispatch();    // 
+
   useEffect(() => {
     dispatch(closeMenu());
   }, []);
