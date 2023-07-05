@@ -12,3 +12,5 @@ const searchSlice = createSlice({
 export const {cacheResults} = searchSlice.actions;
 
 export default searchSlice.reducer;
+
+// we can restrict to store only LRU cache limit to [100] then start removing the suggestions searched first
