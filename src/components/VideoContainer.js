@@ -21,7 +21,7 @@ const VideoContainer = () => {
   }
 console.log(videos.length," 2")
 
-  if(videos.length === 0) return (<h1>Loading...</h1>);
+  if(videos.length === 0) return (<h1 className='font-bold'>Loading... Please wait...</h1>);
 
   return (
     <div className='flex flex-wrap'>

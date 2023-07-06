@@ -13,16 +13,16 @@ const commentsData = [
     text: "lorem ipsum to he functionality of eventloop",
     replies: [
       {
-        name: "akshay saini",
+        name: "Hitesh parihar",
         text: "lorem ipsum to he functionality of eventloop",
         replies: [],
       },
  /*2.2*/      {
-        name: "akshay saini",
+        name: "user saini",
         text: "lorem ipsum to he functionality of eventloop",
         replies: [
  /*2.2.1*/          {
-            name: "akshay saini",
+            name: "Hitesh parihar",
             text: "lorem ipsum to he functionality of eventloop",
             replies: [
  /*2.2.1.1*/              {
@@ -30,7 +30,7 @@ const commentsData = [
                 text: "lorem ipsum to he functionality of eventloop",
                 replies: [
 /*2.2.1.1.2*/                  {
-                    name: "akshay saini",
+                    name: "Hitesh parihar",
                     text: "lorem ipsum to he functionality of eventloop",
                     replies: [
                         {
@@ -92,8 +92,8 @@ const Comment = ({data}) => {
 
 const CommentsList = ({comments}) => {  // will pass here list of comments whole comments which will render
     return ( comments.map((comment,index) => (
-        <div>
-            <Comment key={index}  data={comment} />
+        <div key={index}>
+            <Comment  data={comment} />
             {/************ replies of a comment, is a list comments ,any no. of replies ,N-level nesting****************/}
           <div className="pl-5 border border-l-black ml-5">
             <CommentsList comments={comment.replies}/>       {/* replies=> recursion in components, data passed is comment.replies */}
