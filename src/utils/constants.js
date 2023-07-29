@@ -7,3 +7,9 @@ export const YOUTUBE_SEARCH_API = "http://suggestqueries.google.com/complete/sea
 
 export const LIVE_CHAT_COUNT = 30;
 
+const SEARCH_RESULTS_VIDEOS_API = "https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&q=";
+ // https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&q=surfing&key=[YOUR_API_KEY] 
+
+ export {SEARCH_RESULTS_VIDEOS_API, GOOGLE_API_KEY};
+
+
