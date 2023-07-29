@@ -3,6 +3,7 @@ import { toggleMenu } from "../utils/appSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { YOUTUBE_SEARCH_API } from "../utils/constants";
 import { cacheResults } from "../utils/searchSlice";
+import { Link } from "react-router-dom";
 
 const Head = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -25,7 +26,7 @@ const Head = () => {
     //make an api call after every key press
     //but if the diff. b/w two press/2 api call is <200ms decline api call
     const timer = setTimeout(() => {
-      if (searchCache[searchQuery]) {                     // cache is stored in redux store
+      if (searchCache[searchQuery]) {                     // cache is stored in redux store so when we back <- less api calls made
         setSuggestions(searchCache[searchQuery]);
       } else {
       getSearchSuggestion()
@@ -35,7 +36,7 @@ const Head = () => {
     return() => {
       clearTimeout(timer);
     };
-  },[searchQuery]);
+  }, [ searchQuery]);
 
   /*
   *key - i
@@ -88,7 +89,7 @@ const getSearchSuggestion = async () => {
         </a>
       </div>
       <div className="col-span-10 mx-12">
-        <div>
+        <div className=" flex ">
         <input
           className="w-1/2 rounded-l-full p-2 border border-gray-400 px-5"
           placeholder="  Search"
@@ -96,16 +97,20 @@ const getSearchSuggestion = async () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onFocus={() => setShowSuggestions(true)}
-          onBlur={() => setShowSuggestions(false)}
+          onBlur={() => setTimeout(() => setShowSuggestions(false) ,500 )  } // setTimeout coz for the clicked suggestion list should update the value of input search bar before getting blurred
         />
-        <button className="border border-gray-400 px-5 py-2 bg-gray-100 rounded-r-full">
-          🔍
+        <button className="border border-gray-400 px-5 p-2 bg-gray-100 rounded-r-full">
+        <svg enableBackground="new 0 0 24 24" height="24" viewBox="0 0 24 24" width="24" focusable="false" style={{ pointerEvents: "none", display: "block", width: "100%", height: "100%" }} > <path d="m20.87 20.17-5.59-5.59C16.35 13.35 17 11.75 17 10c0-3.87-3.13-7-7-7s-7 3.13-7 7 3.13 7 7 7c1.75 0 3.35-.65 4.58-1.71l5.59 5.59.7-.71zM10 16c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"></path></svg>
         </button>
         </div>
         {showSuggestions && (
         <div className="fixed bg-white py-2 px-2 w-[24.5rem] shadow-lg rounded-lg border-gray-100">
-          <ul>
-            {suggestions.map(s =>  <li key={s} className="shadow-sm py-2 px-3  hover:bg-gray-100">🔍 {s}</li> )}
+          <ul >
+            {suggestions.map( (s) => {
+              return(
+                <li key={s} onClick={() => setSearchQuery(s) } className="shadow-sm py-2 px-3  hover:bg-gray-100">🔍 {s}</li>
+              );
+                 }   )}
           </ul>
         </div> ) }
       </div>
