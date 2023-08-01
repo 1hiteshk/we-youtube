@@ -1,14 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { toggleMenu } from "../utils/appSlice";
+import { addVideos } from "../utils/resultVideoSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { GOOGLE_API_KEY, SEARCH_RESULTS_VIDEOS_API, YOUTUBE_SEARCH_API } from "../utils/constants";
 import { cacheResults } from "../utils/searchSlice";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import SearchResultPage from "./SearchResultPage";
 
 const Head = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const navigate = useNavigate();
+  const [resultVideo, setResultVideo] = useState(null);
+
+  const { pathName } = useLocation();
+  const pageName = pathName?.split("/")?.filter(Boolean)?.[0];
+  
+
   
 
   // to use the cache we have to dispatch a action from reduxstore to appsite via useSelector
@@ -39,15 +48,30 @@ const Head = () => {
     };
   }, [ searchQuery]);
 
-  // useEffect(() => {
-  //   getSearchResultVideos();
-  // },[]);
+  useEffect(() => {
+    searchQueryHandler();
+    // getSearchResultVideos(searchQuery)
+  },[searchQuery]);
+
+  
+  const searchQueryHandler = (event) => {
+    if( (event?.key === 'Enter' || event === 'searchButton') && searchQuery?.length > 0 ){
+      getSearchResultVideos(searchQuery);
+      navigate(`/searchResults/${searchQuery}`);
+      
+    }
+  }
 
   const getSearchResultVideos = async (searchQuery) => {
+    console.log(searchQuery)
     const datav = await fetch(`${SEARCH_RESULTS_VIDEOS_API}${searchQuery}&key=${GOOGLE_API_KEY}`);
     const videosData = await datav.json();
-    console.log(videosData);
+    // console.log(videosData);
+    await setResultVideo(videosData?.items);
+    console.log(resultVideo)
+    addResultVideos(resultVideo)
   }
+  
   /*
   *key - i
   * - render the component
@@ -81,6 +105,10 @@ const getSearchSuggestion = async () => {
     dispatch(toggleMenu());
   };
 
+  const addResultVideos = (resultVideo) => {
+    dispatch(addVideos(resultVideo));
+  }
+
   return (
     <div className="grid grid-flow-col p-3 m-2 shadow-lg">
       <div className="flex col-span-1 ">
@@ -106,21 +134,18 @@ const getSearchSuggestion = async () => {
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyUp={searchQueryHandler}
           onFocus={() => setShowSuggestions(true)}
           onBlur={() => setTimeout(() => setShowSuggestions(false) ,500 )  } // setTimeout coz for the clicked suggestion list should update the value of input search bar before getting blurred
         />
-        <a href="searchresultpage">
+        
         <button className="border border-gray-400 px-5 p-2 bg-gray-100 rounded-r-full"
-         onClick={() => {
-           getSearchResultVideos(searchQuery);
-         } } 
+          onClick={() => searchQueryHandler('searchButton')}
         >
         <svg enableBackground="new 0 0 24 24" height="24" viewBox="0 0 24 24" width="24" focusable="false" style={{ pointerEvents: "none", display: "block", width: "100%", height: "100%" }} > <path d="m20.87 20.17-5.59-5.59C16.35 13.35 17 11.75 17 10c0-3.87-3.13-7-7-7s-7 3.13-7 7 3.13 7 7 7c1.75 0 3.35-.65 4.58-1.71l5.59 5.59.7-.71zM10 16c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"></path></svg>
         </button>
-        </a>
-    
-
         </div>
+
         {showSuggestions && (
         <div className="fixed bg-white py-2 px-2 w-[24.5rem] shadow-lg rounded-lg border-gray-100">
           <ul >

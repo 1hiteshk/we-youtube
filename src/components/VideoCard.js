@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const VideoCard = ({ info }) => {
   // console.log(info);
@@ -7,6 +8,7 @@ const VideoCard = ({ info }) => {
   const { channelTitle, thumbnails, title } = snippet;
 
   return (
+    
     <div className="p-2 m-2 w-72 shadow-lg ">
       {/* <h1>{info.snippet.title}</h1> */}
       <img
@@ -17,10 +19,11 @@ const VideoCard = ({ info }) => {
       <ul>
         <li className="font-bold">{info.snippet.title}</li>
         <li className="text-gray-500 text-md">{snippet.channelTitle}</li>
-        <li className="text-gray-500">{Math.round(statistics.viewCount / 1000000)}M views</li>
-        <li text-gray-500>{new Date(parseInt(snippet.publishedAt)).toLocaleDateString()}</li>
+        <li className="text-gray-500">{Math.round(statistics?.viewCount / 1000000)}M views</li>
+        <li text-gray-500>{new Date(parseInt(snippet?.publishedAt)).toLocaleDateString()}</li>
       </ul>
     </div>
+    
   );
 };
 
