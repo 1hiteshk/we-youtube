@@ -5,6 +5,8 @@ import { GOOGLE_API_KEY, SEARCH_RESULTS_VIDEOS_API, YOUTUBE_SEARCH_API,} from ".
 import { cacheResults } from "../utils/searchSlice";
 import { Link,Navigate,useLocation,useNavigate, useSearchParams,} from "react-router-dom";
 
+import {BiUserCircle} from "react-icons/bi"
+
 const Head = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
@@ -85,7 +87,7 @@ const Head = () => {
   };
 
   return (
-    <div className="grid grid-flow-col p-3 m-2 shadow-lg">
+    <div className="grid grid-flow-col p-3 m-2 shadow-lg w-full">
       <div className="flex col-span-1 ">
         <img
           onClick={() => toggleMenuHandler()}
@@ -157,11 +159,7 @@ const Head = () => {
         )}
       </div>
       <div className="col-span-1 ">
-        <img
-          className="h-8"
-          src="https://www.iconpacks.net/icons/2/free-user-icon-3296-thumb.png"
-          alt="user-male-circle"
-        />
+      <BiUserCircle className=" text-xl cursor-pointer h-8 w-8" />
       </div>
     </div>
   );
